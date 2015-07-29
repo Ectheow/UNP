@@ -10,10 +10,14 @@ AC_CONFIG_HEADERS([config.h])
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_RANLIB
+AM_PROG_AR
 
 
 LIBUNP=libunp.a
 AC_SUBST(LIBUNP)
+AC_SUBST(PWD)
+LIBUNP_FULL_PATH=$(pwd)/lib/$LIBUNP
+AC_SUBST(LIBUNP_FULL_PATH)
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lunp':
 # AC_CHECK_LIB([unp], [main])
@@ -30,5 +34,11 @@ AC_TYPE_SSIZE_T
 AC_FUNC_FORK
 AC_CHECK_FUNCS([bzero select socket strerror])
 
-AC_CONFIG_FILES([Makefile Make.defines])
+AC_CONFIG_FILES([
+	Makefile
+	Make.defines
+	lib/Makefile
+	echo/Makefile
+	intro/Makefile
+	udpcliserv/Makefile])
 AC_OUTPUT

@@ -75,11 +75,11 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-DIST_COMMON = $(srcdir)/Make.defines $(srcdir)/Makefile.in \
-	$(srcdir)/Makefile.am $(top_srcdir)/configure \
-	$(am__configure_deps) $(srcdir)/config.h.in \
-	$(srcdir)/Make.defines.in compile install-sh missing
 subdir = .
+DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
+	$(top_srcdir)/configure $(am__configure_deps) \
+	$(srcdir)/config.h.in $(srcdir)/Make.defines.in ar-lib compile \
+	depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -192,13 +192,14 @@ distcleancheck_listfiles = find . -type f -print
 ACLOCAL = ${SHELL} /home/john/code-projects/unp/unp-examples/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
+AR = ar
 AUTOCONF = ${SHELL} /home/john/code-projects/unp/unp-examples/missing autoconf
 AUTOHEADER = ${SHELL} /home/john/code-projects/unp/unp-examples/missing autoheader
 AUTOMAKE = ${SHELL} /home/john/code-projects/unp/unp-examples/missing automake-1.14
 AWK = gawk
 CC = gcc
-CCDEPMODE = depmode=none
-CFLAGS = -I../include -I../lib -g -O2
+CCDEPMODE = depmode=gcc3
+CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -217,8 +218,9 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = 
 LIBOBJS = 
-LIBS = libunp.a 
+LIBS = 
 LIBUNP = libunp.a
+LIBUNP_FULL_PATH = /home/john/code-projects/unp/unp-examples/lib/libunp.a
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} /home/john/code-projects/unp/unp-examples/missing makeinfo
 MKDIR_P = /bin/mkdir -p
@@ -231,15 +233,17 @@ PACKAGE_TARNAME = unp-examples
 PACKAGE_URL = 
 PACKAGE_VERSION = 1.0
 PATH_SEPARATOR = :
+PWD = /home/john/code-projects/unp/unp-examples
 RANLIB = ranlib
 SET_MAKE = 
-SHELL = /bin/sh
+SHELL = /bin/bash
 STRIP = 
 VERSION = 1.0
 abs_builddir = /home/john/code-projects/unp/unp-examples
 abs_srcdir = /home/john/code-projects/unp/unp-examples
 abs_top_builddir = /home/john/code-projects/unp/unp-examples
 abs_top_srcdir = /home/john/code-projects/unp/unp-examples
+ac_ct_AR = ar
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -278,22 +282,6 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
-RM = rm
-ECHO = echo
-# ifeq ($(DEBUG),y)
-# 	DEBFLAGS= -g -DDEBUG
-# else
-# 	DEBFLAGS=
-# endif
-
-#CCFLAGS+=$(DEBFLAGS)
-#order is important in this case. lib needs to be first.
-#DIRS = lib echo udpcliserv
-
-# all: force_do
-# 	for i in $(DIRS); do \
-# 		(cd $$i; $(MAKE) $(MFLAGS));\
-# 	done
 SUBDIRS = lib echo udpcliserv
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -301,7 +289,7 @@ all: config.h
 .SUFFIXES:
 am--refresh: Makefile
 	@:
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(srcdir)/Make.defines $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -324,7 +312,6 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe)'; \
 	    cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe);; \
 	esac;
-$(srcdir)/Make.defines:
 
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
@@ -768,10 +755,7 @@ uninstall-am:
 	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
 	uninstall-am
 
-# clean:
-# 	for i in $(DIRS); do (cd $$i; $(MAKE) clean); done
-force_do:
-	true
+export AM_CPPFLAGS=-I$(PWD)/include -I$(PWD)/lib
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
