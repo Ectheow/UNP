@@ -1,18 +1,9 @@
-ifeq ($(DEBUG),y)
-	DEBFLAGS= -g -DDEBUG
-else
-	DEBFLAGS=
-endif
-
-CC=gcc
-CCFLAGS=$(DEBFLAGS)
+include ../Make.defines
 SRCS = $(wildcard *.c)
 PROGS = $(patsubst %.c,%,$(SRCS))
-INCLUDES=../include
-LIBS=../lib
 all: $(PROGS)
 
 %: %.c
-	$(CC) -L$(LIBS) -I$(INCLUDES) $(CCFLAGS) -o $@ $< -lunp
+	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
 clean:
 	rm -rf $(PROGS)

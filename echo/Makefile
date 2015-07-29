@@ -1,10 +1,10 @@
-include ../Makefile.inc
+include ../Make.defines
 
 SRCS = $(wildcard *.c)
 PROGS = $(patsubst %.c,%,$(SRCS))
 all: $(PROGS)
 
 %: %.c
-	$(CC) -L$(LIBS) -I$(INCLUDES) $(CCFLAGS) -o $@ $< -lunp
+	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
 clean:
 	rm -rf $(PROGS)
