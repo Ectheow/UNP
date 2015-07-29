@@ -1,5 +1,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/wait.h>
 #include <sys/time.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -7,19 +8,26 @@
 #include <strings.h>
 #include <string.h>
 #include <stdio.h>
+#include <poll.h>
 #include <errno.h>
 #include <stdarg.h>
 #include <signal.h>
 
+
 #ifndef _UTILS_H_
 #define _UTILS_H_
+
+#ifndef INFTIM
+# define INFTIM -1
+#endif
 
 #define LISTENQ 1024
 #define MAXLINE 4096
 #define SERV_PORT 9877
+#define OPEN_MAX 4096
 
 #define SA struct sockaddr
-
+#define max(a, b) a > b ? a : b
 typedef void Sigfunc(int);
 
 void err_sys(const char *fmt, ...);
@@ -153,6 +161,59 @@ Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
   return (n);			/* May return 0 on timeout. */
   
 }
+
+static void
+Shutdown(int fd, int how)
+{
+  if (shutdown(fd, how) < 0)
+    err_sys("shutdown error");
+}
+
+static int
+Poll(struct pollfd *fdarray, unsigned long nfds, int timeout)
+{
+  int n;
+
+  if ( (n = poll(fdarray, nfds, timeout)) < 0)
+    err_sys("poll error");
+
+  return(n);
+}
+
+
+static ssize_t
+Recvfrom(int fd, void *ptr, size_t nbytes, int flags,
+	 struct sockaddr *sa, socklen_t* salenptr)
+{
+  ssize_t n;
+
+  if ( (n = recvfrom(fd, ptr, nbytes, flags, sa, salenptr)) < 0)
+    err_sys("recvfrom error");
+  return(n);
+}
+
+static void
+Sendto(int fd, const void *ptr, size_t nbytes, int flags,
+       const struct sockaddr *sa, socklen_t salen)
+{
+  if(sendto(fd, ptr, nbytes, flags, sa, salen) != (ssize_t)nbytes)
+    err_sys("sendto error");
+}
+
+static void
+Setsockopt(int fd, int level, int optname, void *optval, socklen_t optlen)
+{
+  if(setsockopt(fd, level, optname, optval, optlen) < 0)
+    err_sys("setsockopt error");
+}
+
+static void
+Getsockopt(int fd, int level, int optname, void *optval, socklen_t *optlenptr)
+{
+  if(getsockopt(fd, level, optname, optval, optlenptr) < 0)
+    err_sys("getsockopt error");
+}
+
 #endif	/* _UTILS_H_ */
 
 

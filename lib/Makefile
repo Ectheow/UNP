@@ -1,5 +1,10 @@
+ifeq ($(DEBUG),y)
+	DEBFLAGS=-g -DDEBUG
+else
+	DEBFLAGS=
+endif
 CC=gcc
-CFLAGS=
+CCFLAGS=$(DEBFLAGS)
 INCLUDES=../include
 SRCS=$(wildcard *.c)
 LIB_OBJS=$(patsubst %.c,%.o,$(SRCS))
@@ -10,6 +15,6 @@ all: $(LIB_OBJS)
 	ranlib $(LIB_NAME)
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) -I$(INCLUDES) -o $@ $<
+	$(CC) -c $(CCFLAGS) -I$(INCLUDES) -o $@ $<
 clean:
 	rm -rf $(LIB_OBJS) $(LIB_NAME)

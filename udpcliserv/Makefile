@@ -1,7 +1,15 @@
-include ../Makefile.inc
+ifeq ($(DEBUG),y)
+	DEBFLAGS= -g -DDEBUG
+else
+	DEBFLAGS=
+endif
 
+CC=gcc
+CCFLAGS=$(DEBFLAGS)
 SRCS = $(wildcard *.c)
 PROGS = $(patsubst %.c,%,$(SRCS))
+INCLUDES=../include
+LIBS=../lib
 all: $(PROGS)
 
 %: %.c
