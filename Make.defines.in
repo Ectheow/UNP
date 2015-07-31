@@ -1,7 +1,0 @@
-CC = @CC@
-CFLAGS= -I../include -I../lib @CFLAGS@
-LIBS=@LIBUNP@ @LIBS@
-RANLIB = @RANLIB@
-RM = rm
-ECHO = echo
-SHELL = /bin/sh

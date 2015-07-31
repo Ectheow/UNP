@@ -1,20 +1,5 @@
 #include "utils.h"
 
-void
-str_echo(int sockfd)
-{
-  ssize_t n;
-  char buf[MAXLINE];
- again:
-  while ( (n = read(sockfd, buf, MAXLINE)) > 0) {
-    sleep(1);
-    Writen(sockfd, buf, n);
-  }
-  if(n < 0 && errno == EINTR)
-    goto again;
-  else if (n < 0)
-    err_sys("str_echo: read error");
-}
 
 void
 sig_chld(int signo)
@@ -50,8 +35,13 @@ int main(int argc, char **argv)
     /* Restart the system call if we get EINTR.
      * This happens if you don't set the SA_RESTART
      * flag in your sa_flags for the sigaction in 
-     * a signal handler, accept can get interrupted
-     * on return, and errno is set to EINTR.
+     * a signal handler; accept can get interrupted.
+     * On return, and errno is set to EINTR.
+     * In general the reception of signals during a slow
+     * system call can result in the restart of a system
+     * call when the process recieves an interrupt.
+     * a system call is slow if it can block for long periods
+     * of time -- network connections or terminals for example.
      */
     if ( (connfd = accept(listenfd, (SA *)&cliaddr, &clilen)) < 0) {
       if(errno == EINTR)

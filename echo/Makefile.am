@@ -1,0 +1,8 @@
+bin_PROGRAMS=echocli\
+	echocli_multi\
+	echocli_simple\
+	echocli_multiwrite\
+	echo_srv\
+	echo_srv_poll\
+	echo_srv_select
+LDADD=$(LIBUNP_FULL_PATH)

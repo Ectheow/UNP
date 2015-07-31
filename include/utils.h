@@ -12,7 +12,7 @@
 #include <errno.h>
 #include <stdarg.h>
 #include <signal.h>
-
+#include "config.h"
 
 #ifndef _UTILS_H_
 #define _UTILS_H_
@@ -120,7 +120,6 @@ Fork(void)
   return(pid);
 }
 
-
 static void
 Inet_pton(int family, const char *strptr, void *addrptr)
 {
@@ -201,7 +200,7 @@ Sendto(int fd, const void *ptr, size_t nbytes, int flags,
 }
 
 static void
-Setsockopt(int fd, int level, int optname, void *optval, socklen_t optlen)
+Setsockopt(int fd, int level, int optname, const void *optval, socklen_t optlen)
 {
   if(setsockopt(fd, level, optname, optval, optlen) < 0)
     err_sys("setsockopt error");
