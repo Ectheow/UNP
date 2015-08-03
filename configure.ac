@@ -38,6 +38,7 @@ AC_CONFIG_FILES([
 	lib/Makefile
 	echo/Makefile
 	intro/Makefile
+	hostnames/Makefile
 	udpcliserv/Makefile])
 
 AC_OUTPUT

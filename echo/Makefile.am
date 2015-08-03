@@ -4,5 +4,6 @@ bin_PROGRAMS=echocli\
 	echocli_multiwrite\
 	echo_srv\
 	echo_srv_poll\
-	echo_srv_select
+	echo_srv_select\
+	echocli_tester
 LDADD=$(LIBUNP_FULL_PATH)
