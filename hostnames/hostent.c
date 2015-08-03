@@ -3,7 +3,7 @@
 int
 main(int argc, char **argv)
 {
-  char *ptr, **ptr;
+  char *ptr, **pptr;
   char str[INET_ADDRSTRLEN];
   struct hostent *hptr;
 
@@ -11,12 +11,12 @@ main(int argc, char **argv)
     ptr = *++argv;
     if ( (hptr = gethostbyname(ptr)) == NULL) {
       err_msg("getnostbyname error for host: %s: %s",
-	      ptr, hsterror(h_errno));
+	      ptr, hstrerror(h_errno));
       continue;
     }
-    printf("official hostname: %s\n", ptr->h_name);
+    printf("official hostname: %s\n", hptr->h_name);
 
-    for (ptr = hptr->h_aliases; *pptr != NULL; pptr++)
+    for (pptr = hptr->h_aliases; *pptr != NULL; pptr++)
       printf("\talias: %s\n", *pptr);
 
     switch(hptr->h_addrtype) {
@@ -27,7 +27,7 @@ main(int argc, char **argv)
 	       Inet_ntop(hptr->h_addrtype, *pptr, str, sizeof(str)));
       break;
     default:
-      err_ret("unknown address type");
+      err_msg("unknown address type");
       break;
     }
   }

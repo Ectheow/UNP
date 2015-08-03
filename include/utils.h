@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <stdarg.h>
 #include <signal.h>
+#include <netdb.h>
 #include "config.h"
 
 #ifndef _UTILS_H_
@@ -129,6 +130,16 @@ Inet_pton(int family, const char *strptr, void *addrptr)
     err_sys("inet_pton error for %s", strptr);
   else if(n == 0)
     err_quit("inet_pton error for %s", strptr);
+}
+
+static const char *
+Inet_ntop(int af, const void *src,
+	  char *dst, socklen_t size)
+{
+  const char *ptr;
+  if ( (ptr = inet_ntop(af, src, dst, size)) == NULL)
+    err_sys("inet_ntop error.");
+  return ptr;
 }
 
 static char *
