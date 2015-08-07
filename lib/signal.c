@@ -11,7 +11,7 @@ signal(int signo, Sigfunc *func)
   if (signo == SIGALRM) {
     
   } else {
-    //act.sa_flags |= SA_RESTART; /* Restart interrupted syscalls if not alrm. */
+    //act.sa_flags |= SA_RESTART;  //Restart interrupted syscalls if not alrm. 
   }
   if(sigaction(signo, &act, &oact) < 0)
     return(SIG_ERR);

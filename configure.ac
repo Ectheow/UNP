@@ -39,6 +39,8 @@ AC_CONFIG_FILES([
 	echo/Makefile
 	intro/Makefile
 	hostnames/Makefile
+	inetd/Makefile
+	misc/Makefile
 	udpcliserv/Makefile])
 
 AC_OUTPUT

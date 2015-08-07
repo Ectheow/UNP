@@ -11,6 +11,7 @@ libunp_a_SOURCES=strcliselect01.c\
 	tcp_connect.c\
 	host_serv.c\
 	tcp_listen.c\
-	daemon_init.c
+	daemon_init.c\
+	connect_timeo.c
 
 

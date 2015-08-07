@@ -1,0 +1,2 @@
+bin_PROGRAMS=portscan
+LDADD=$(LIBUNP_FULL_PATH)

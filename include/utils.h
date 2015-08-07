@@ -244,6 +244,15 @@ Getpeername(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
   return ret;
 }
 
+static void *
+Malloc(size_t nbytes)
+{
+  void *ptr;
+  if ( (ptr = malloc(nbytes)) == NULL)
+    err_sys("malloc error");
+  return ptr;
+}
+
 #endif	/* _UTILS_H_ */
 
 

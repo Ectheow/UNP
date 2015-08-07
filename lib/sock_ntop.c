@@ -19,7 +19,8 @@ sock_ntop(const struct sockaddr *sa, socklen_t salen)
     return(str);
   }
   case AF_INET6: {
-    return NULL;
+    str[0] = '\0';
+    return str;
   }
     
   }
