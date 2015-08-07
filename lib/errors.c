@@ -1,16 +1,23 @@
 #include "utils.h"
+int daemon_proc;		/* Set to 1 if we are a daemon. */
 
 static void
-err_base(int type, const char *fmt, va_list args) {
+err_base(int type, int level, const char *fmt, va_list args) {
   char buf[MAXLINE];
   vsnprintf(buf, MAXLINE, fmt, args);
   va_end(args);
   if(type == 1) {
     strcat(buf, ": ");
     strcat(buf, strerror(errno));
-    strcat(buf, "\n");
   }
-  fputs(buf, stderr);
+  strcat(buf, "\n");
+  if(daemon_proc) {
+    syslog(level, buf);
+  } else {
+    fflush(stdout);
+    fputs(buf, stderr);
+    fflush(stderr);
+  }
 
   return;
 }
@@ -24,7 +31,7 @@ err_sys(const char *fmt, ...)
 {
   va_list args;
   va_start(args, fmt);
-  err_base(1, fmt, args);
+  err_base(1, LOG_ERR, fmt, args);
   va_end(args);
   exit(1);
 }
@@ -37,7 +44,7 @@ void
 err_quit(const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
-  err_base(0, fmt, args);
+  err_base(0, LOG_ERR, fmt, args);
   va_end(args);
   exit(1);
 }
@@ -50,7 +57,7 @@ void
 err_msg(const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
-  err_base(0, fmt, args);
+  err_base(0, LOG_INFO, fmt, args);
   va_end(args);
   return; /* No exit. Not fatal.*/
 }
@@ -63,7 +70,7 @@ void
 err_ret(const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
-  err_base(1, fmt, args);
+  err_base(1, LOG_INFO, fmt, args);
   va_end(args);
   return;
 }

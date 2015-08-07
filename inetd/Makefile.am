@@ -1,0 +1,2 @@
+bin_PROGRAMS=daytimecpsrv2
+LDADD=$(LIBUNP_FULL_PATH)

@@ -7,6 +7,10 @@ libunp_a_SOURCES=strcliselect01.c\
 	signal.c\
 	sock_ntop.c\
 	writen.c\
-	str_echo.c
+	str_echo.c\
+	tcp_connect.c\
+	host_serv.c\
+	tcp_listen.c\
+	daemon_init.c
 
 

@@ -111,7 +111,7 @@ main(int argc, char **argv)
 	 * anyway on an fd. This in our case means
 	 * a RST. 
 	 */
-	if ( (n = read(clients[i].fd, MAXLINE) == 0)) {
+	if ( (n = read(clients[i].fd, buf, MAXLINE) == 0)) {
 	  /*
 	   * The server can reset the connection if,
 	   * for example, the server process crashes.

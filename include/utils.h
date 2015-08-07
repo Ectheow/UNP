@@ -2,6 +2,9 @@
 #include <sys/socket.h>
 #include <sys/wait.h>
 #include <sys/time.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
@@ -13,6 +16,7 @@
 #include <stdarg.h>
 #include <signal.h>
 #include <netdb.h>
+#include <syslog.h>
 #include "config.h"
 
 #ifndef _UTILS_H_
@@ -222,6 +226,22 @@ Getsockopt(int fd, int level, int optname, void *optval, socklen_t *optlenptr)
 {
   if(getsockopt(fd, level, optname, optval, optlenptr) < 0)
     err_sys("getsockopt error");
+}
+
+static int
+Tcp_connect(const char *host, const char *serv)
+{
+  return (tcp_connect(host, serv));
+}
+
+static int
+Getpeername(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+{
+  int ret;
+  if( (ret = getpeername(sockfd, addr, addrlen)) != 0) {
+    err_sys("getpeername error");
+  }
+  return ret;
 }
 
 #endif	/* _UTILS_H_ */
